@@ -8,7 +8,7 @@ namespace _2DSupplyStation.Pages
         private readonly IWebHostEnvironment _environment;
 
         // 存储图片文件的路径
-        public List<string> ImagePaths { get; private set; } = [];
+        public List<ImageInfo> Images { get; private set; } = [];
 
         private static readonly string[] sourceArray = [".jpg", ".jpeg", ".png", ".gif", ".bmp"];
 
@@ -23,18 +23,30 @@ namespace _2DSupplyStation.Pages
 
         public void OnGet()
         {
-            var imagesDir = Path.Combine(_environment.WebRootPath, "images");
+            var imagesDir = Path.Combine(_environment.WebRootPath, "Images");
             if (Directory.Exists(imagesDir))
             {
-                ImagePaths = Directory.EnumerateFiles(imagesDir)
-                                      .Where(file => sourceArray.Contains(Path.GetExtension(file)?.ToLower()))
-                                      .Select(fileName => "/Images/" + Path.GetFileName(fileName))
-                                      .ToList();
+                Images = Directory.EnumerateFiles(imagesDir)
+                                  .Where(file => new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" }
+                                  .Contains(Path.GetExtension(file)?.ToLower()))
+                                  .Select(filePath => new ImageInfo
+                                  {
+                                      FileName = Path.GetFileNameWithoutExtension(filePath),
+                                      FilePath = "/Images/" + Path.GetFileName(filePath)
+                                  })
+                                  .ToList();
             }
             else
             {
-                ImagePaths = [];
+                Images = new List<ImageInfo>();
             }
         }
     }
+
+    public class ImageInfo
+    {
+        public string FileName { get; set; } // 不包含扩展名的文件名
+        public string FilePath { get; set; } // 图片的相对路径
+    }
+
 }
