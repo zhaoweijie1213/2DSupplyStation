@@ -47,11 +47,11 @@ namespace _2DSupplyStation.Pages
                                   .Select(filePath => new ImageInfo
                                   {
                                       FileName = Path.GetFileNameWithoutExtension(filePath),
-                                      FilePath = "/Images/" + Path.GetFileName(filePath)
+                                      FilePath = "/images/" + Path.GetFileName(filePath)
                                   })
                                   .ToList();
 
-                _logger.LogInformation("OnGet.图片列表:{Images}", JsonConvert.SerializeObject(Images));
+                _logger.LogInformation("OnGet.图片列表:{images}", JsonConvert.SerializeObject(Images));
             }
             else
             {
