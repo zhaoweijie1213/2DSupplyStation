@@ -49,6 +49,7 @@ namespace _2DSupplyStation.Pages
                                       FileName = Path.GetFileNameWithoutExtension(filePath),
                                       FilePath = "/images/" + Path.GetFileName(filePath)
                                   })
+                                  .OrderBy(i=>i.FileName)
                                   .ToList();
 
                 _logger.LogInformation("OnGet.图片列表:{images}", JsonConvert.SerializeObject(Images));
@@ -62,8 +63,15 @@ namespace _2DSupplyStation.Pages
 
     public class ImageInfo
     {
-        public string FileName { get; set; } // 不包含扩展名的文件名
-        public string FilePath { get; set; } // 图片的相对路径
+        /// <summary>
+        /// 不包含扩展名的文件名
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
+        /// 图片的相对路径
+        /// </summary>
+        public string FilePath { get; set; }
     }
 
 }
