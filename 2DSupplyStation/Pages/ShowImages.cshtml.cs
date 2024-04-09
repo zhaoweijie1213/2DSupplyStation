@@ -32,11 +32,11 @@ namespace _2DSupplyStation.Pages
 
             _logger.LogInformation("OnGet.图片路径:{imagesDir}", imagesDir);
 
-            // 尝试创建测试文件
-            var testFilePath = Path.Combine(imagesDir, "test.txt");
-            System.IO.File.WriteAllText(testFilePath, "This is a test file.");
+            //// 尝试创建测试文件
+            //var testFilePath = Path.Combine(imagesDir, "test.txt");
+            //System.IO.File.WriteAllText(testFilePath, "This is a test file.");
 
-            _logger.LogInformation($"测试文件已创建: {testFilePath}");
+            //_logger.LogInformation($"测试文件已创建: {testFilePath}");
 
             if (Directory.Exists(imagesDir))
             {
