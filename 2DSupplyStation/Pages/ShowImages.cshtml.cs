@@ -28,7 +28,7 @@ namespace _2DSupplyStation.Pages
 
         public void OnGet()
         {
-            var imagesDir = Path.Combine(_environment.WebRootPath, "Images");
+            var imagesDir = Path.Combine(_environment.WebRootPath, "images");
 
             _logger.LogInformation("OnGet.图片路径:{imagesDir}", imagesDir);
 
