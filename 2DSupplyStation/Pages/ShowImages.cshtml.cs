@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace _2DSupplyStation.Pages
 {
     public class ShowImagesModel : PageModel
     {
+        private readonly ILogger<ShowImagesModel> _logger;
+
         private readonly IWebHostEnvironment _environment;
 
         // 存储图片文件的路径
@@ -16,14 +20,18 @@ namespace _2DSupplyStation.Pages
         /// 
         /// </summary>
         /// <param name="environment"></param>
-        public ShowImagesModel(IWebHostEnvironment environment)
+        public ShowImagesModel(ILogger<ShowImagesModel> logger,IWebHostEnvironment environment)
         {
+            _logger = logger;
             _environment = environment;
         }
 
         public void OnGet()
         {
             var imagesDir = Path.Combine(_environment.WebRootPath, "Images");
+
+            _logger.LogInformation("OnGet.图片路径:{imagesDir}", imagesDir);
+
             if (Directory.Exists(imagesDir))
             {
                 Images = Directory.EnumerateFiles(imagesDir)
@@ -35,6 +43,8 @@ namespace _2DSupplyStation.Pages
                                       FilePath = "/Images/" + Path.GetFileName(filePath)
                                   })
                                   .ToList();
+
+                _logger.LogInformation("OnGet.图片列表:{Images}", JsonConvert.SerializeObject(Images));
             }
             else
             {
