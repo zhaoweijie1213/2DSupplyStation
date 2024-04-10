@@ -20,7 +20,7 @@ namespace _2DSupplyStation.Pages
 
         private static readonly string[] sourceArray = [".jpg", ".jpeg", ".png", ".gif", ".bmp"];
 
-        public void OnGet(string product = "normal")
+        public void OnGet(string product = "Normal")
         {
             var imagesDir = Path.Combine(_environment.WebRootPath, "images", product);
 

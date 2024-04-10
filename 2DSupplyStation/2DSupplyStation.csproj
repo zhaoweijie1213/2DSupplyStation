@@ -16,8 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\3d\" />
-    <Folder Include="wwwroot\images\normal\" />
+    <Folder Include="wwwroot\images\GenshinImpact3d\" />
+    <Folder Include="wwwroot\images\Normal\" />
+    <Folder Include="wwwroot\images\GenshinImpact\" />
+    <Folder Include="wwwroot\images\HonkaiStarRail\" />
+    <Folder Include="wwwroot\images\HonkaiStarRail3d\" />
   </ItemGroup>
 
   <ItemGroup>
