@@ -11,6 +11,7 @@
         justify-content: center;
         gap: 20px; /* 图片之间的间距 */
         margin: 20px auto; /* 居中显示 */
+        background-color: #333; /* 深灰色背景 */
     }
 
     /* Flex子项样式 */
@@ -30,6 +31,10 @@
             max-width: 800px; /* 在PC端最大宽度为800px */
         }
     }
+
+    .fileName{
+        color: #ffffff; /* 设置文本颜色为白色 */
+    }
 </style>
 
 <div class="custom-container">
@@ -37,7 +42,7 @@
     {
         <div class="img-container">
             <img src="@image.FilePath" alt="Image" class="img-fluid" loading="lazy">
-            <div class="mt-2">@image.FileName</div>
+            <div class="mt-2 fileName">@image.FileName</div>
         </div>
     }
 </div>
