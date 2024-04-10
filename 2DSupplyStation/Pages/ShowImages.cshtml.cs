@@ -1,3 +1,4 @@
+using _2DSupplyStation.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -59,19 +60,6 @@ namespace _2DSupplyStation.Pages
                 Images = new List<ImageInfo>();
             }
         }
-    }
-
-    public class ImageInfo
-    {
-        /// <summary>
-        /// 不包含扩展名的文件名
-        /// </summary>
-        public string FileName { get; set; }
-
-        /// <summary>
-        /// 图片的相对路径
-        /// </summary>
-        public string FilePath { get; set; }
     }
 
 }
