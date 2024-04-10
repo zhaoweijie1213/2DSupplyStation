@@ -4,41 +4,40 @@
     ViewData["Title"] = "图库";
 }
 <style>
-
-    /* 移动设备默认样式 */
+    /* Flex容器样式 */
     .custom-container {
-        width: 100%;
-        max-width: 100%; /* 在移动设备上充满屏幕宽度 */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px; /* 图片之间的间距 */
         margin: 20px auto; /* 居中显示 */
     }
 
-    /* PC端样式 */
-    @@media (min-width: 768px) {
-        .custom-container {
-            max-width: 800px; /* 在PC端最大宽度为800px */
-        }
-    }
-
+    /* Flex子项样式 */
     .img-container {
+        flex: 0 1 calc(50% - 20px); /* 计算每个图片容器的宽度，减去间距 */
         text-align: center; /* 居中图片 */
-        /* margin-bottom: 20px; /* 在每个图片容器底部添加20px的间距 */ */
     }
 
     .img-fluid {
         max-width: 100%; /* 使图片最大宽度为容器宽度 */
         height: auto; /* 保持图片原始宽高比 */
-        display: inline-block; /* 配合容器的文本居中样式 */
+    }
+
+    /* PC端样式调整 */
+    @@media (min-width: 768px) {
+        .custom-container {
+            max-width: 800px; /* 在PC端最大宽度为800px */
+        }
     }
 </style>
 
 <div class="custom-container">
     @foreach (var image in Model.Images)
     {
-        <div class="row mb-4">
-            <div class="col-12 img-container">
-                <img src="@image.FilePath" alt="Image" class="img-fluid">
-                <div class="mt-2">@image.FileName</div>
-            </div>
+        <div class="img-container">
+            <img src="@image.FilePath" alt="Image" class="img-fluid" loading="lazy">
+            <div class="mt-2">@image.FileName</div>
         </div>
     }
 </div>
