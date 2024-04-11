@@ -3,6 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddLog4Net();
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
