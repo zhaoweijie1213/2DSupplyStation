@@ -45,7 +45,7 @@ namespace _2DSupplyStation.Pages
             // 使用获取的信息
             // 例如，将它们返回在视图中或进行某些处理
 
-            _logger.LogInformation("IP Address: {ipAddress}, User Agent: {userAgent}", ipAddress, userAgent);
+            _logger.LogInformation("Product:{product},IP Address: {ipAddress}, User Agent: {userAgent}", product, ipAddress, userAgent);
 
             Images = GetImages(product);
 
