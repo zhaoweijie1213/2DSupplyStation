@@ -19,23 +19,57 @@
       <span>不分类</span>
     </v-btn>
   </v-bottom-navigation>
+  <v-container class="img_container" fluid>
+    <v-row dense>
+      <v-col
+        v-for="(image, index) in images"
+        :key="index"
+        cols="6"
+        sm="4"
+        md="4"
+        lg="3"
+        xl="2"
+        xxl="2"
+      >
+        <v-card>
+          <v-img :src="image.filePath" class="align-end" cover> </v-img>
+          <v-card-title class="text-white text-center">{{
+            image.fileName
+          }}</v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
-import { ImagesServiceProxy } from "@/api/api";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+import { ImageInfo, ImagesServiceProxy } from "@/api/api";
 import { useDisplay } from "vuetify";
 const { mobile } = useDisplay();
+const images = ref<ImageInfo[]>([]);
 onMounted(() => {
   console.log(mobile.value); // false
+  clickItem("HomkalStarRail3d");
 });
 
 const clickItem = async (name: string) => {
   var res = await getImages(name);
+  if (res.code == 0 && res.data) {
+    images.value = res.data;
+  }
 };
 
 async function getImages(name: string) {
   var client = new ImagesServiceProxy();
   var res = await client.list(name);
+  return res;
 }
 </script>
+<style lang="css" scoped>
+@media (min-width: 768px) {
+  .img_container {
+    width: 80% !important;
+  }
+}
+</style>

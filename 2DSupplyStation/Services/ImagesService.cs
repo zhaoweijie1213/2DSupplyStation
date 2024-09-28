@@ -12,10 +12,7 @@ namespace _2DSupplyStation.Services
     /// <summary>
     /// 图片服务
     /// </summary>
-    /// <param name="logger"></param>
-    /// <param name="environment"></param>
-    /// <param name="memoryCache"></param>
-    public class ImagesService(ILogger<ImagesService> logger, IWebHostEnvironment environment, IMemoryCache memoryCache) : ITransientDependency
+    public class ImagesService(ILogger<ImagesService> logger, IWebHostEnvironment environment, IMemoryCache memoryCache,IConfiguration configuration) : ITransientDependency
     {
 
         // 存储图片文件的路径
@@ -39,6 +36,7 @@ namespace _2DSupplyStation.Services
 
                     logger.LogInformation("OnGet.图片路径:{imagesDir}", imagesDir);
 
+                    string domain = configuration.GetSection("Domain").Get<string>() ?? "";
                     if (Directory.Exists(imagesDir))
                     {
 
@@ -47,7 +45,7 @@ namespace _2DSupplyStation.Services
                                           .Select(filePath => new ImageInfo
                                           {
                                               FileName = Path.GetFileNameWithoutExtension(filePath),
-                                              FilePath = $"/images/{product}/" + Path.GetFileName(filePath)
+                                              FilePath = $"{domain}/images/{product}/" + Path.GetFileName(filePath)
                                           })
                                           .OrderBy(i => i.FileName)
                                           .ToList();
