@@ -1,9 +1,17 @@
+using QYQ.Base.Common.IOCExtensions;
+using QYQ.Base.Swagger.Extension;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddLog4Net();
 // Add services to the container.
-builder.Services.AddRazorPages();
+//builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
+builder.Services.AddMultipleService("^2DSupplyStation");
+builder.AddQYQSwaggerAndApiVersioning(new NSwag.OpenApiInfo()
+{
+    Title = "SupplyStation"
+}, null, false);
 
 var app = builder.Build();
 
@@ -19,9 +27,10 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseQYQSwaggerUI("SupplyStation", false);
+//app.UseAuthorization();
 
-app.UseAuthorization();
-
-app.MapRazorPages();
+//app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
