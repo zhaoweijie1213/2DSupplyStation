@@ -24,6 +24,7 @@
     <Folder Include="wwwroot\images\GenshinImpact\" />
     <Folder Include="wwwroot\images\HonkaiStarRail\" />
     <Folder Include="wwwroot\images\HonkaiStarRail3d\" />
+    <Folder Include="wwwroot\images\Hidden-v2\" />
   </ItemGroup>
 
   <ItemGroup>
