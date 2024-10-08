@@ -2,7 +2,9 @@
 using _2DSupplyStation.Pages;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using QYQ.Base.Common.ApiResult;
 using QYQ.Base.Common.Extension;
 using QYQ.Base.Common.IOCExtensions;
 using System;
@@ -13,13 +15,32 @@ namespace _2DSupplyStation.Services
     /// <summary>
     /// 图片服务
     /// </summary>
-    public class ImagesService(ILogger<ImagesService> logger, IWebHostEnvironment environment, IMemoryCache memoryCache,IConfiguration configuration) : ITransientDependency
+    public class ImagesService(ILogger<ImagesService> logger, IWebHostEnvironment environment, IMemoryCache memoryCache,IConfiguration configuration, IOptionsMonitor<List<MenuConfig>> menus) : ITransientDependency
     {
 
         // 存储图片文件的路径
         public List<ImageInfo> Images { get; private set; } = [];
 
         private static readonly string[] sourceArray = [".jpg", ".jpeg", ".png", ".gif", ".bmp"];
+
+        /// <summary>
+        /// 获取菜单
+        /// </summary>
+        /// <returns></returns>
+        public ApiResult<List<MenuConfig>> Menus()
+        {
+            ApiResult<List<MenuConfig>> result = new();
+            string imagesPath = Path.Combine(environment.WebRootPath, "images");
+            DirectoryInfo imagesDirInfo = new(imagesPath);
+            // 获取所有子目录
+            var hiddenDirectories = imagesDirInfo.GetDirectories();
+            var list = menus.CurrentValue.Select(i => new MenuConfig()
+            {
+                Name = i.Name,
+                Path = hiddenDirectories.FirstOrDefault(x => x.Name.StartsWith(i.Path))?.Name ?? i.Path
+            }).ToList();
+            return result.SetRsult(ApiResultCode.Success, list);
+        }
 
         /// <summary>
         /// 获取图片

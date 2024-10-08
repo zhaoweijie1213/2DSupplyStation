@@ -1,4 +1,5 @@
 using _2DSupplyStation.AuthenticationExtend;
+using _2DSupplyStation.Models;
 using _2DSupplyStation.Services;
 using QYQ.Base.Common.IOCExtensions;
 using QYQ.Base.Swagger.Extension;
@@ -10,6 +11,7 @@ builder.Logging.AddLog4Net();
 builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<HiddenFolderRenamer>();
+builder.Services.Configure<List<MenuConfig>>(builder.Configuration.GetSection("Menus"));
 builder.Services.AddMultipleService("^2DSupplyStation");
 builder.AddQYQSwaggerAndApiVersioning(new NSwag.OpenApiInfo()
 {

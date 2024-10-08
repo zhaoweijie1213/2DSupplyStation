@@ -40,7 +40,7 @@ namespace _2DSupplyStation.Services
                 return;
             }
 
-            // 获取以 "hidden" 开头的子文件夹
+            // 获取子文件夹
             var hiddenDirectories = Directory.GetDirectories(_imagesPath);
 
             foreach (var dirPath in hiddenDirectories)

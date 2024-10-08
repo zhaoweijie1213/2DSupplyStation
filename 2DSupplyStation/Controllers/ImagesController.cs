@@ -26,8 +26,7 @@ namespace _2DSupplyStation.Controller
         [HttpGet("Menus")]
         public ApiResult<List<MenuConfig>> Menus()
         {
-            ApiResult<List<MenuConfig>> result = new();
-            return result.SetRsult(ApiResultCode.Success, menus.CurrentValue);
+            return imagesService.Menus();
         }
 
         /// <summary>
