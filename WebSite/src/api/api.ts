@@ -15,7 +15,7 @@ import {
   CancelToken,
 } from "axios";
 
-// import dayjs from "dayjs";
+// import dayjs from 'dayjs';
 
 export class ImagesServiceProxy extends ServiceProxyBase {
   private baseUrl: string;
@@ -28,9 +28,13 @@ export class ImagesServiceProxy extends ServiceProxyBase {
   }
 
   menus(
+    auth: string | undefined,
     cancelToken?: CancelToken | undefined
   ): Promise<ApiResultOfListOfMenuConfig> {
-    let url_ = this.baseUrl + "/api/v1/Images/Menus";
+    let url_ = this.baseUrl + "/api/v1/Images/Menus?";
+    if (auth === null) throw new Error("The parameter 'auth' cannot be null.");
+    else if (auth !== undefined)
+      url_ += "auth=" + encodeURIComponent("" + auth) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_ = <AxiosRequestConfig>{
@@ -94,6 +98,7 @@ export class ImagesServiceProxy extends ServiceProxyBase {
 
   list(
     product: string | undefined,
+    auth: string | undefined,
     cancelToken?: CancelToken | undefined
   ): Promise<ApiResultOfListOfImageInfo> {
     let url_ = this.baseUrl + "/api/v1/Images/List?";
@@ -101,6 +106,9 @@ export class ImagesServiceProxy extends ServiceProxyBase {
       throw new Error("The parameter 'product' cannot be null.");
     else if (product !== undefined)
       url_ += "product=" + encodeURIComponent("" + product) + "&";
+    if (auth === null) throw new Error("The parameter 'auth' cannot be null.");
+    else if (auth !== undefined)
+      url_ += "auth=" + encodeURIComponent("" + auth) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_ = <AxiosRequestConfig>{
@@ -163,10 +171,13 @@ export class ImagesServiceProxy extends ServiceProxyBase {
   }
 
   hid(
-    auth: string,
+    auth: string | undefined,
     cancelToken?: CancelToken | undefined
   ): Promise<ApiResultOfListOfImageInfo> {
-    let url_ = this.baseUrl + "/api/v1/Images/hid?auth=" + auth;
+    let url_ = this.baseUrl + "/api/v1/Images/hid?";
+    if (auth === null) throw new Error("The parameter 'auth' cannot be null.");
+    else if (auth !== undefined)
+      url_ += "auth=" + encodeURIComponent("" + auth) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_ = <AxiosRequestConfig>{

@@ -26,14 +26,17 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import { ImageInfo, ImagesServiceProxy, MenuConfig } from "@/api/api";
 import { useDisplay } from "vuetify";
 import AppHead from "@/components/AppHead.vue";
 import ImagesContainer from "@/components/ImagesContainer.vue";
 const { mobile } = useDisplay();
+const route = useRoute();
 const images = ref<ImageInfo[]>([]);
 const menus = ref<MenuConfig[]>([]);
-const activeTab = ref("HomkalStarRail3d");
+const activeTab = ref("");
+const auth: string = route.query.auth as string;
 onMounted(async () => {
   console.log(mobile.value); // false
   await getMenus();
@@ -50,7 +53,7 @@ const clickItem = async (name: string) => {
 
 async function getMenus() {
   var client = new ImagesServiceProxy();
-  var res = await client.menus();
+  var res = await client.menus(auth);
   if (res.code == 0 && res.data) {
     menus.value = res.data;
   }
@@ -58,7 +61,7 @@ async function getMenus() {
 
 async function getImages(name: string) {
   var client = new ImagesServiceProxy();
-  var res = await client.list(name);
+  var res = await client.list(name, auth);
   return res;
 }
 </script>
