@@ -13,7 +13,7 @@
       >
         <v-card>
           <img :src="image.filePath" class="align-end img-custom" cover />
-          <v-card-title class="text-white text-center"
+          <v-card-title class="text-white text-center app-card-title"
             >编号：{{ image.fileName }}</v-card-title
           >
         </v-card>
@@ -37,5 +37,8 @@ defineProps<{
 <style scoped>
 .img-custom {
   width: 100%;
+}
+.app-card-title {
+  font-size: 0.75rem;
 }
 </style>
