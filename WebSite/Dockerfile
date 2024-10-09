@@ -1,4 +1,4 @@
-FROM nginx:1.26 as base
+FROM nginx:1.27.1-alpine as base
 EXPOSE 80
 
 COPY /_nginx/nginx.conf /etc/nginx/nginx.conf
