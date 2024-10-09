@@ -6,6 +6,7 @@
         v-for="(menu, index) in menus"
         :key="index"
         :title="menu.name"
+        :active="menu.path == activeTab"
         @click="clickItem(menu.path)"
       ></v-list-item>
     </v-list>
