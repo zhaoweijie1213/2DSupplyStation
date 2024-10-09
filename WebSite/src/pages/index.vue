@@ -1,5 +1,15 @@
 <template>
   <AppHead />
+  <v-navigation-drawer v-show="!mobile">
+    <v-list>
+      <v-list-item
+        v-for="(menu, index) in menus"
+        :key="index"
+        :title="menu.name"
+        @click="clickItem(menu.path)"
+      ></v-list-item>
+    </v-list>
+  </v-navigation-drawer>
   <v-bottom-navigation v-model="activeTab" v-if="mobile" grow>
     <v-btn
       v-for="(menu, index) in menus"
