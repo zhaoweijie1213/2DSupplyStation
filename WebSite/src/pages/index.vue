@@ -46,6 +46,7 @@ onMounted(async () => {
 });
 
 const clickItem = async (name: string) => {
+  activeTab.value = name;
   var res = await getImages(name);
   if (res.code == 0 && res.data) {
     images.value = res.data;
