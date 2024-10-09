@@ -45,7 +45,7 @@ namespace _2DSupplyStation.Services
 
             foreach (var dirPath in hiddenDirectories)
             {
-                string dirName = Path.GetFileName(dirPath);
+                string dirName = Path.GetFileName(dirPath).Split('-')[0];
                 string randomSuffix = GenerateRandomSuffix();
                 // 检查是否已经有随机后缀
                 if (dirName == randomSuffix)

@@ -27,6 +27,71 @@ export class ImagesServiceProxy extends ServiceProxyBase {
     this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
   }
 
+  menus(
+    cancelToken?: CancelToken | undefined
+  ): Promise<ApiResultOfListOfMenuConfig> {
+    let url_ = this.baseUrl + "/api/v1/Images/Menus";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <AxiosRequestConfig>{
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "application/json",
+      },
+      cancelToken,
+    };
+
+    return this.transformOptions(options_)
+      .then((transformedOptions_) => {
+        return this.instance.request(transformedOptions_);
+      })
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.transformResult(
+          url_,
+          _response,
+          (_response: AxiosResponse) => this.processMenus(_response)
+        );
+      });
+  }
+
+  protected processMenus(
+    response: AxiosResponse
+  ): Promise<ApiResultOfListOfMenuConfig> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (const k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = ApiResultOfListOfMenuConfig.fromJS(resultData200);
+      return Promise.resolve<ApiResultOfListOfMenuConfig>(result200);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<ApiResultOfListOfMenuConfig>(null as any);
+  }
+
   list(
     product: string | undefined,
     cancelToken?: CancelToken | undefined
@@ -96,6 +161,173 @@ export class ImagesServiceProxy extends ServiceProxyBase {
     }
     return Promise.resolve<ApiResultOfListOfImageInfo>(null as any);
   }
+
+  hid(
+    auth: string,
+    cancelToken?: CancelToken | undefined
+  ): Promise<ApiResultOfListOfImageInfo> {
+    let url_ = this.baseUrl + "/api/v1/Images/hid?auth=" + auth;
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ = <AxiosRequestConfig>{
+      method: "GET",
+      url: url_,
+      headers: {
+        Accept: "application/json",
+      },
+      cancelToken,
+    };
+
+    return this.transformOptions(options_)
+      .then((transformedOptions_) => {
+        return this.instance.request(transformedOptions_);
+      })
+      .catch((_error: any) => {
+        if (isAxiosError(_error) && _error.response) {
+          return _error.response;
+        } else {
+          throw _error;
+        }
+      })
+      .then((_response: AxiosResponse) => {
+        return this.transformResult(
+          url_,
+          _response,
+          (_response: AxiosResponse) => this.processHid(_response)
+        );
+      });
+  }
+
+  protected processHid(
+    response: AxiosResponse
+  ): Promise<ApiResultOfListOfImageInfo> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && typeof response.headers === "object") {
+      for (const k in response.headers) {
+        if (response.headers.hasOwnProperty(k)) {
+          _headers[k] = response.headers[k];
+        }
+      }
+    }
+    if (status === 200) {
+      const _responseText = response.data;
+      let result200: any = null;
+      let resultData200 = _responseText;
+      result200 = ApiResultOfListOfImageInfo.fromJS(resultData200);
+      return Promise.resolve<ApiResultOfListOfImageInfo>(result200);
+    } else if (status !== 200 && status !== 204) {
+      const _responseText = response.data;
+      return throwException(
+        "An unexpected server error occurred.",
+        status,
+        _responseText,
+        _headers
+      );
+    }
+    return Promise.resolve<ApiResultOfListOfImageInfo>(null as any);
+  }
+}
+
+/** api返回结果对象 ApiResult */
+export class ApiResultOfListOfMenuConfig
+  implements IApiResultOfListOfMenuConfig
+{
+  /** 执行结果 */
+  code!: number;
+  /** 提示消息 */
+  message!: string;
+  /** 结果 */
+  data!: MenuConfig[] | undefined;
+
+  constructor(data?: IApiResultOfListOfMenuConfig) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(_data?: any) {
+    if (_data) {
+      this.code = _data["code"];
+      this.message = _data["message"];
+      if (Array.isArray(_data["data"])) {
+        this.data = [] as any;
+        for (let item of _data["data"])
+          this.data!.push(MenuConfig.fromJS(item));
+      }
+    }
+  }
+
+  static fromJS(data: any): ApiResultOfListOfMenuConfig {
+    data = typeof data === "object" ? data : {};
+    let result = new ApiResultOfListOfMenuConfig();
+    result.init(data);
+    return result;
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["code"] = this.code;
+    data["message"] = this.message;
+    if (Array.isArray(this.data)) {
+      data["data"] = [];
+      for (let item of this.data) data["data"].push(item.toJSON());
+    }
+    return data;
+  }
+}
+
+/** api返回结果对象 ApiResult */
+export interface IApiResultOfListOfMenuConfig {
+  /** 执行结果 */
+  code: number;
+  /** 提示消息 */
+  message: string;
+  /** 结果 */
+  data: MenuConfig[] | undefined;
+}
+
+export class MenuConfig implements IMenuConfig {
+  name!: string;
+  path!: string;
+
+  constructor(data?: IMenuConfig) {
+    if (data) {
+      for (var property in data) {
+        if (data.hasOwnProperty(property))
+          (<any>this)[property] = (<any>data)[property];
+      }
+    }
+  }
+
+  init(_data?: any) {
+    if (_data) {
+      this.name = _data["name"];
+      this.path = _data["path"];
+    }
+  }
+
+  static fromJS(data: any): MenuConfig {
+    data = typeof data === "object" ? data : {};
+    let result = new MenuConfig();
+    result.init(data);
+    return result;
+  }
+
+  toJSON(data?: any) {
+    data = typeof data === "object" ? data : {};
+    data["name"] = this.name;
+    data["path"] = this.path;
+    return data;
+  }
+}
+
+export interface IMenuConfig {
+  name: string;
+  path: string;
 }
 
 /** api返回结果对象 ApiResult */
