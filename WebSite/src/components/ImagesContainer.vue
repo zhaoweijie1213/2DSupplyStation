@@ -16,7 +16,7 @@
           xl="2"
           xxl="2"
         >
-          <v-card>
+          <v-card class="elevation-6">
             <img :src="image.filePath" class="align-end img-custom" cover />
             <v-card-title class="text-white text-center app-card-title"
               >编号：{{ image.fileName }}</v-card-title
