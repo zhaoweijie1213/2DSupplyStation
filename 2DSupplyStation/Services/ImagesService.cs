@@ -47,7 +47,7 @@ namespace _2DSupplyStation.Services
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public Task<List<ImageInfo>> GetImagesAsync(string product)
+        public Task<List<ImageInfo>> GetImagesAsync(string product, int pageNum = 1, int pageSize = 10)
         {
             try
             {
@@ -77,8 +77,8 @@ namespace _2DSupplyStation.Services
                         memoryCache.Set(key, images, TimeSpan.FromMinutes(1));
                     }
                 }
-
-                return Task.FromResult(images!);
+                var list = images!.Skip((pageNum - 1) * pageSize).Take(pageSize).ToList();
+                return Task.FromResult(list);
             }
             catch (Exception e)
             {
@@ -91,7 +91,7 @@ namespace _2DSupplyStation.Services
         /// 获取隐藏款图片
         /// </summary>
         /// <returns></returns>
-        public Task<List<ImageInfo>> GetHiddenImagesAsync()
+        public Task<List<ImageInfo>> GetHiddenImagesAsync(int pageNum = 1, int pageSize = 10)
         {
             try
             {
@@ -126,8 +126,8 @@ namespace _2DSupplyStation.Services
                         memoryCache.Set(key, images, TimeSpan.FromMinutes(1));
                     }
                 }
-
-                return Task.FromResult(images!);
+                var list = images!.Skip((pageNum - 1) * pageSize).Take(pageSize).ToList();
+                return Task.FromResult(list);
             }
             catch (Exception e)
             {

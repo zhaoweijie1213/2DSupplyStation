@@ -22,35 +22,31 @@
       <span>{{ menu.name }}</span>
     </v-btn>
   </v-bottom-navigation>
-  <ImagesContainer :images="images" />
+
+  <ImagesContainer :product="activeTab" :hidden="false" />
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { ImageInfo, ImagesServiceProxy, MenuConfig } from "@/api/api";
+import { ImagesServiceProxy, MenuConfig } from "@/api/api";
 import { useDisplay } from "vuetify";
 import AppHead from "@/components/AppHead.vue";
 import ImagesContainer from "@/components/ImagesContainer.vue";
+
 const { mobile } = useDisplay();
 const route = useRoute();
-const images = ref<ImageInfo[]>([]);
 const menus = ref<MenuConfig[]>([]);
 const activeTab = ref("");
 const auth: string = route.query.auth as string;
 onMounted(async () => {
   console.log(mobile.value); // false
   await getMenus();
-  activeTab.value = menus.value[0].path;
   clickItem(menus.value[0].path);
 });
 
 const clickItem = async (name: string) => {
   activeTab.value = name;
-  var res = await getImages(name);
-  if (res.code == 0 && res.data) {
-    images.value = res.data;
-  }
 };
 
 async function getMenus() {
@@ -59,12 +55,6 @@ async function getMenus() {
   if (res.code == 0 && res.data) {
     menus.value = res.data;
   }
-}
-
-async function getImages(name: string) {
-  var client = new ImagesServiceProxy();
-  var res = await client.list(name, auth);
-  return res;
 }
 </script>
 <style lang="css" scoped>

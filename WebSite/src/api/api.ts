@@ -15,7 +15,7 @@ import {
   CancelToken,
 } from "axios";
 
-// import dayjs from 'dayjs';
+// import dayjs from "dayjs";
 
 export class ImagesServiceProxy extends ServiceProxyBase {
   private baseUrl: string;
@@ -99,6 +99,8 @@ export class ImagesServiceProxy extends ServiceProxyBase {
   list(
     product: string | undefined,
     auth: string | undefined,
+    pageNum: number | undefined,
+    pageSize: number | undefined,
     cancelToken?: CancelToken | undefined
   ): Promise<ApiResultOfListOfImageInfo> {
     let url_ = this.baseUrl + "/api/v1/Images/List?";
@@ -109,6 +111,14 @@ export class ImagesServiceProxy extends ServiceProxyBase {
     if (auth === null) throw new Error("The parameter 'auth' cannot be null.");
     else if (auth !== undefined)
       url_ += "auth=" + encodeURIComponent("" + auth) + "&";
+    if (pageNum === null)
+      throw new Error("The parameter 'pageNum' cannot be null.");
+    else if (pageNum !== undefined)
+      url_ += "pageNum=" + encodeURIComponent("" + pageNum) + "&";
+    if (pageSize === null)
+      throw new Error("The parameter 'pageSize' cannot be null.");
+    else if (pageSize !== undefined)
+      url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_ = <AxiosRequestConfig>{
@@ -172,12 +182,22 @@ export class ImagesServiceProxy extends ServiceProxyBase {
 
   hid(
     auth: string | undefined,
+    pageNum: number | undefined,
+    pageSize: number | undefined,
     cancelToken?: CancelToken | undefined
   ): Promise<ApiResultOfListOfImageInfo> {
     let url_ = this.baseUrl + "/api/v1/Images/hid?";
     if (auth === null) throw new Error("The parameter 'auth' cannot be null.");
     else if (auth !== undefined)
       url_ += "auth=" + encodeURIComponent("" + auth) + "&";
+    if (pageNum === null)
+      throw new Error("The parameter 'pageNum' cannot be null.");
+    else if (pageNum !== undefined)
+      url_ += "pageNum=" + encodeURIComponent("" + pageNum) + "&";
+    if (pageSize === null)
+      throw new Error("The parameter 'pageSize' cannot be null.");
+    else if (pageSize !== undefined)
+      url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_ = <AxiosRequestConfig>{

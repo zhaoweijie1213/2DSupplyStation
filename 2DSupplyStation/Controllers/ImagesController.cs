@@ -43,9 +43,12 @@ namespace _2DSupplyStation.Controller
         /// 列表
         /// </summary>
         /// <param name="product"></param>
+        /// <param name="auth"></param>
+        /// <param name="pageNum"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet("List")]
-        public async Task<ApiResult<List<ImageInfo>>> List(string product, string auth)
+        public async Task<ApiResult<List<ImageInfo>>> List(string product, string auth, int pageNum = 1, int pageSize = 10)
         {
             ApiResult<List<ImageInfo>> result = new();
             bool status = ValidateAuth(auth);
@@ -76,7 +79,7 @@ namespace _2DSupplyStation.Controller
                 // 例如，将它们返回在视图中或进行某些处理
                 logger.LogInformation("Product:{product},IP Address: {ipAddress}, User Agent: {userAgent}", product, ipAddress, userAgent);
 
-                var images = await imagesService.GetImagesAsync(product);
+                var images = await imagesService.GetImagesAsync(product, pageNum, pageSize);
                 result.SetRsult(ApiResultCode.Success, images);
                 return result;
             }
@@ -109,7 +112,7 @@ namespace _2DSupplyStation.Controller
         /// <returns></returns>
         [HttpGet("hid")]
         [Authorize(AuthenticationSchemes = UrlTokenAuthenticationDefaults.AuthenticationScheme)]
-        public async Task<ApiResult<List<ImageInfo>>> Hidden(string auth)
+        public async Task<ApiResult<List<ImageInfo>>> Hidden(string auth, int pageNum = 1, int pageSize = 10)
         {
             ApiResult<List<ImageInfo>> result = new();
             string ipAddress = "";
@@ -133,7 +136,7 @@ namespace _2DSupplyStation.Controller
             // 例如，将它们返回在视图中或进行某些处理
             logger.LogInformation("Product:{product},IP Address: {ipAddress}, User Agent: {userAgent}", "Hidden", ipAddress, userAgent);
 
-            var images = await imagesService.GetHiddenImagesAsync();
+            var images = await imagesService.GetHiddenImagesAsync(pageNum, pageSize);
             result.SetRsult(ApiResultCode.Success, images);
             return result;
         }
