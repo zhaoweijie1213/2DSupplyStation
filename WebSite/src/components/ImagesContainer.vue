@@ -1,8 +1,7 @@
 <template>
-  <v-container fluid>
+  <v-container v-if="images?.length > 0" fluid>
     <v-infinite-scroll
-      v-if="images?.length > 0"
-      class="img_container"
+      class="img_infinite_scroll"
       :items="images"
       :onLoad="load"
     >
@@ -25,14 +24,17 @@
           </v-card>
         </v-col>
       </v-row>
+      <template v-slot:empty>
+        <p class="text-subtitle-2 text-center">只有这些了~ QAQ</p>
+      </template>
     </v-infinite-scroll>
-    <v-empty-state
-      v-else
-      icon="mdi-magnify"
-      text="Try adjusting your search terms or filters. Sometimes less specific terms or broader queries can help you find what you're looking for."
-      title="We couldn't find a match."
-    ></v-empty-state>
   </v-container>
+  <v-empty-state
+    v-else
+    icon="mdi-magnify"
+    text="Try adjusting your search terms or filters. Sometimes less specific terms or broader queries can help you find what you're looking for."
+    title="We couldn't find a match."
+  ></v-empty-state>
 </template>
 <script setup lang="ts">
 import { ref, watch } from "vue";
@@ -58,7 +60,7 @@ watch(
       pageNum = 1; // 重置分页参数，如果有分页需求
       images.value = [];
       const res = await getImages(newProduct);
-      if (res.code == 0 && res.data) {
+      if (res?.code == 0 && res.data) {
         images.value.push(...res.data);
       }
     }
@@ -70,10 +72,10 @@ async function getImages(name: string) {
   var res;
   if (props.hidden) {
     res = await client.hid(auth, pageNum, pageSize);
-    return res;
-  } else {
+  } else if (props.hidden == false && props.product) {
     res = await client.list(name, auth, pageNum, pageSize);
   }
+  pageNum++;
   return res;
 }
 
@@ -81,7 +83,7 @@ async function load({ done }: any) {
   done("loading");
   // Perform API call
   const res = await getImages(props.product);
-  if (res.code == 0 && res.data) {
+  if (res?.code == 0 && res.data) {
     if (res.data.length > 0) {
       images.value.push(...res.data);
       done("ok");
@@ -99,5 +101,9 @@ async function load({ done }: any) {
 }
 .app-card-title {
   font-size: 0.75rem;
+}
+.img_infinite_scroll {
+  width: 100%;
+  overflow-x: hidden;
 }
 </style>

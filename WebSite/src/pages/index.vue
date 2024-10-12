@@ -1,6 +1,6 @@
 <template>
   <AppHead />
-  <v-navigation-drawer v-show="!mobile">
+  <v-navigation-drawer v-model="drawer">
     <v-list>
       <v-list-item
         v-for="(menu, index) in menus"
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { ImagesServiceProxy, MenuConfig } from "@/api/api";
 import { useDisplay } from "vuetify";
@@ -38,12 +38,20 @@ const { mobile } = useDisplay();
 const route = useRoute();
 const menus = ref<MenuConfig[]>([]);
 const activeTab = ref("");
+const drawer = ref(!mobile.value);
 const auth: string = route.query.auth as string;
 onMounted(async () => {
   console.log(mobile.value); // false
   await getMenus();
   clickItem(menus.value[0].path);
 });
+
+watch(
+  () => mobile,
+  (newValue) => {
+    drawer.value = !newValue.value;
+  }
+);
 
 const clickItem = async (name: string) => {
   activeTab.value = name;
