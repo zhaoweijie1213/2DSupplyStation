@@ -3,6 +3,7 @@ using _2DSupplyStation.Pages;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using NaturalSort.Extension;
 using Newtonsoft.Json;
 using QYQ.Base.Common.ApiResult;
 using QYQ.Base.Common.Extension;
@@ -69,7 +70,7 @@ namespace _2DSupplyStation.Services
                                               FileName = Path.GetFileNameWithoutExtension(filePath),
                                               FilePath = $"{domain}/images/{product}/" + Path.GetFileName(filePath)
                                           })
-                                          //.OrderBy(i => i.FileName)
+                                          .OrderBy(image => image.FileName, StringComparer.OrdinalIgnoreCase.WithNaturalSort()) // 使用自然排序
                                           .ToList();
 
                         logger.LogInformation("OnGet.图片列表:{images}", JsonConvert.SerializeObject(images));
@@ -118,7 +119,7 @@ namespace _2DSupplyStation.Services
                                               FileName = Path.GetFileNameWithoutExtension(filePath),
                                               FilePath = $"{domain}/images/{hiddenDirectory}/" + Path.GetFileName(filePath)
                                           })
-                                          //.OrderBy(i => i.FileName)
+                                          .OrderBy(image => image.FileName, StringComparer.OrdinalIgnoreCase.WithNaturalSort()) // 使用自然排序
                                           .ToList();
 
                         logger.LogInformation("GetHiddenImagesAsync.图片列表:{images}", JsonConvert.SerializeObject(images));
