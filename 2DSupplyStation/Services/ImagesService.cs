@@ -69,7 +69,7 @@ namespace _2DSupplyStation.Services
                                               FileName = Path.GetFileNameWithoutExtension(filePath),
                                               FilePath = $"{domain}/images/{product}/" + Path.GetFileName(filePath)
                                           })
-                                          .OrderBy(i => i.FileName)
+                                          //.OrderBy(i => i.FileName)
                                           .ToList();
 
                         logger.LogInformation("OnGet.图片列表:{images}", JsonConvert.SerializeObject(images));
@@ -118,7 +118,7 @@ namespace _2DSupplyStation.Services
                                               FileName = Path.GetFileNameWithoutExtension(filePath),
                                               FilePath = $"{domain}/images/{hiddenDirectory}/" + Path.GetFileName(filePath)
                                           })
-                                          .OrderBy(i => i.FileName)
+                                          //.OrderBy(i => i.FileName)
                                           .ToList();
 
                         logger.LogInformation("GetHiddenImagesAsync.图片列表:{images}", JsonConvert.SerializeObject(images));
