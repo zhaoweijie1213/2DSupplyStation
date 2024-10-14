@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddLog4Net();
 // Add services to the container.
-builder.Services.AddRazorPages();
+//builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<HiddenFolderRenamer>();
 builder.Services.Configure<List<MenuConfig>>(builder.Configuration.GetSection("Menus"));
@@ -61,7 +61,7 @@ app.UseQYQSwaggerUI("SupplyStation", false);
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
+//app.MapRazorPages();
 app.MapControllers();
 
 app.Run();
