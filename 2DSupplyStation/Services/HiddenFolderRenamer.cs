@@ -58,7 +58,7 @@ namespace _2DSupplyStation.Services
                 try
                 {
                     Directory.Move(dirPath, newDirPath);
-                    _logger.LogInformation("已将文件夹重命名：{OldName} -> {NewName}", dirName, newDirName);
+                    _logger.LogDebug("已将文件夹重命名：{OldName} -> {NewName}", dirName, newDirName);
                 }
                 catch (Exception ex)
                 {

@@ -72,7 +72,7 @@ namespace _2DSupplyStation.Services
                                           .OrderBy(image => image.FileName, StringComparer.OrdinalIgnoreCase.WithNaturalSort()) // 使用自然排序
                                           .ToList();
 
-                        logger.LogInformation("OnGet.图片列表:{images}", JsonConvert.SerializeObject(images));
+                        logger.LogDebug("GetImagesAsync.图片列表:{images}", JsonConvert.SerializeObject(images));
 
                         memoryCache.Set(key, images, TimeSpan.FromMinutes(1));
                     }
@@ -121,7 +121,7 @@ namespace _2DSupplyStation.Services
                                           .OrderBy(image => image.FileName, StringComparer.OrdinalIgnoreCase.WithNaturalSort()) // 使用自然排序
                                           .ToList();
 
-                        logger.LogInformation("GetHiddenImagesAsync.图片列表:{images}", JsonConvert.SerializeObject(images));
+                        logger.LogDebug("GetHiddenImagesAsync.图片列表:{images}", JsonConvert.SerializeObject(images));
 
                         memoryCache.Set(key, images, TimeSpan.FromMinutes(1));
                     }
