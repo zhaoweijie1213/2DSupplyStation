@@ -56,7 +56,7 @@ namespace _2DSupplyStation.Services
                 {
                     var imagesDir = Path.Combine(environment.WebRootPath, "images", product);
 
-                    logger.LogInformation("OnGet.图片路径:{imagesDir}", imagesDir);
+                    logger.LogInformation("GetImagesAsync.图片路径:{imagesDir}", imagesDir);
 
                     string domain = configuration.GetSection("Domain").Get<string>() ?? "";
                     if (Directory.Exists(imagesDir))

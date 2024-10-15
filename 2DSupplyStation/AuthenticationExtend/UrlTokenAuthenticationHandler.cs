@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using QYQ.Base.Common.Models;
+using System.Net;
 using System.Security.Claims;
 
 namespace _2DSupplyStation.AuthenticationExtend
@@ -21,7 +22,7 @@ namespace _2DSupplyStation.AuthenticationExtend
         /// <returns></returns>
         public Task InitializeAsync(AuthenticationScheme scheme, HttpContext context)
         {
-            logger.LogInformation($"This is {nameof(UrlTokenAuthenticationHandler)}.InitializeAsync");
+            //logger.LogDebug($"This is {nameof(UrlTokenAuthenticationHandler)}.InitializeAsync");
             _AuthenticationScheme = scheme;
             _HttpContext = context;
             return Task.CompletedTask;
@@ -60,8 +61,10 @@ namespace _2DSupplyStation.AuthenticationExtend
         /// <returns></returns>
         public Task ChallengeAsync(AuthenticationProperties? properties)
         {
-            string redirectUri = "/Error";
-            _HttpContext?.Response.Redirect(redirectUri);
+            if (_HttpContext != null)
+            {
+                _HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            }
             return Task.CompletedTask;
         }
 

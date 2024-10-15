@@ -1,0 +1,14 @@
+[2024-10-15 12:15:41.017 INF] _2DSupplyStation.Services.HiddenFolderRenamer - HiddenFolderRenamer 服务已启动。
+[2024-10-15 12:15:41.045 DBG] _2DSupplyStation.Services.HiddenFolderRenamer - 已将文件夹重命名：GenshinImpact3d -> GenshinImpact3d-hu5yw86p
+[2024-10-15 12:15:41.048 DBG] _2DSupplyStation.Services.HiddenFolderRenamer - 已将文件夹重命名：Hidden -> Hidden-fz66yeb0
+[2024-10-15 12:15:41.052 DBG] _2DSupplyStation.Services.HiddenFolderRenamer - 已将文件夹重命名：HonkaiStarRail3d -> HonkaiStarRail3d-0ltyjc77
+[2024-10-15 12:15:41.308 WRN] Microsoft.AspNetCore.Server.Kestrel - Overriding address(es) 'http://any:3182'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+[2024-10-15 12:15:41.330 INF] Microsoft.Hosting.Lifetime - Now listening on: http://[::]:3182
+[2024-10-15 12:15:41.331 INF] Microsoft.Hosting.Lifetime - Application started. Press Ctrl+C to shut down.
+[2024-10-15 12:15:41.331 INF] Microsoft.Hosting.Lifetime - Hosting environment: Development
+[2024-10-15 12:15:41.332 INF] Microsoft.Hosting.Lifetime - Content root path: F:\Git\2DSupplyStation\2DSupplyStation
+[2024-10-15 12:15:45.791 INF] _2DSupplyStation.AuthenticationExtend.UrlTokenAuthenticationHandler - This is UrlTokenAuthenticationHandler.InitializeAsync
+[2024-10-15 12:15:45.802 INF] _2DSupplyStation.AuthenticationExtend.UrlTokenAuthenticationHandler - This is UrlTokenAuthenticationHandler.InitializeAsync
+[2024-10-15 12:15:45.866 INF] _2DSupplyStation.AuthenticationExtend.UrlTokenAuthenticationHandler - This is UrlTokenAuthenticationHandler.InitializeAsync
+[2024-10-15 12:15:45.869 INF] _2DSupplyStation.AuthenticationExtend.UrlTokenAuthenticationHandler - This is UrlTokenAuthenticationHandler.InitializeAsync
+[2024-10-15 12:15:53.566 INF] _2DSupplyStation.AuthenticationExtend.UrlTokenAuthenticationHandler - This is UrlTokenAuthenticationHandler.InitializeAsync

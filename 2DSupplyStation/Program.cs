@@ -3,10 +3,11 @@ using _2DSupplyStation.Models;
 using _2DSupplyStation.Services;
 using QYQ.Base.Common.IOCExtensions;
 using QYQ.Base.Swagger.Extension;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.AddLog4Net();
+//builder.Logging.AddLog4Net();
 // Add services to the container.
 //builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
@@ -17,6 +18,13 @@ builder.AddQYQSwaggerAndApiVersioning(new NSwag.OpenApiInfo()
 {
     Title = "SupplyStation"
 }, null, false);
+
+builder.Services.AddSerilog(configureLogger =>
+{
+    configureLogger.Enrich.WithMachineName()
+    .Enrich.FromLogContext()
+    .ReadFrom.Configuration(builder.Configuration);
+});
 
 //¿çÓòÅäÖÃ
 builder.Services.AddCors(options =>
@@ -53,6 +61,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSerilogRequestLogging();
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("CorsPolicy");
