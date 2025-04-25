@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+    app:
+        container_name: ${SERVICE_NAME}
+        image: ${SERVICE_NAME}:${IMAGE_TAG}
+        restart: always
+        network_mode: host
+        privileged: true
+        environment:
+            - Cluster=${Cluster}
+            - ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=SkyAPM.Agent.AspNetCore
+            - SKYWALKING__SERVICENAME=${SERVICE_NAME}
+            - TZ=Asia/Shanghai # 设置时区为北京时间
+        volumes:
+            - /data/qyqweb/${SERVICE_NAME}/logs:/app/logs
+            - /etc/ssl/private:/etc/ssl/private

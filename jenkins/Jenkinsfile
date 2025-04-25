@@ -1,0 +1,151 @@
+/* groovylint-disable BlockStartsWithBlankLine, DuplicateMapLiteral, DuplicateNumberLiteral, DuplicateStringLiteral, LineLength, NoDef, VariableTypeRequired */
+/* groovylint-disable-next-line CompileStatic */
+properties([
+    [$class: 'GogsProjectProperty', gogsBranchFilter: 'test', gogsUsePayload: false] //只有test分支启用webhook
+])
+pipeline {
+    agent any
+    environment {
+        SERVICE_NAME = '2D-supply-station' // 定义服务名称变量
+        DOCKERFILE_PATH = '2DSupplyStation.Host.Api/Dockerfile'  // ✅ 每个项目可配置
+    }
+    options {
+        buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '15'))
+    }
+    parameters {
+        // Git tag parameter for the master branch
+        gitParameter(
+            name: 'GIT_TAG',
+            type: 'PT_TAG',
+            defaultValue: 'v1.0.0',
+            branchFilter: 'origin/main',
+            sortMode: 'DESCENDING_SMART',
+            tagFilter: 'v[0-9]*.[0-9]*.[0-9]', // ✅ 正式版格式：vX.Y.Z（不含 -dev、-beta 等后缀）
+            description: '选择用于构建的正式发布 Git (main 分支)'
+        )
+
+        // 非 master 和 develop 分支时使用的集群环境参数
+        choice(
+            name: 'Cluster',
+            choices: ['default', 'staging', 'production'], // 根据你的环境需求添加选项
+            description: '选择部署的集群环境 (除 main 和 develop 分支外使用)'
+        )
+    }
+    stages {
+        // stage('拉取指定 Git Tag') {
+        //     when {
+        //         branch 'master'
+        //     }
+        //     steps {
+        //         checkout([
+        //             $class: 'GitSCM',
+        //             branches: [[name: "refs/tags/${params.GIT_TAG}"]],
+        //             userRemoteConfigs: scm.userRemoteConfigs
+        //         ])
+        //         echo "✅ 已 checkout 到 tag: ${params.GIT_TAG}"
+        //     }
+        // }
+        stage('设置sh脚本的执行权限') {
+            steps {
+                sh 'chmod +x ./jenkins/scripts/*.sh'
+            }
+        }
+        stage('构建Docker镜像') {
+            steps {
+                sh './jenkins/scripts/docker-image-build.sh'
+                echo 'docker镜像构建完成...'
+                // 读取 build_meta.env 中的 IMAGE_TAG
+                script {
+                    def props = readProperties file: './build_meta.env'
+                    env.IMAGE_TAG = props['IMAGE_TAG']
+                    echo "读取到镜像标签: ${env.IMAGE_TAG}"
+                }
+            }
+        }
+        stage('开发阶段-部署到内网环境') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    sh """
+                        docker compose -p ${env.SERVICE_NAME} -f jenkins/docker-compose.yaml down || true
+                        docker compose -p ${env.SERVICE_NAME} -f jenkins/docker-compose.yaml up -d
+                        docker compose -p ${env.SERVICE_NAME} -f jenkins/docker-compose.yaml ps
+                    """
+                    sh "docker ps --filter name=${SERVICE_NAME}"
+                }
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                // def jobName = env.JOB_NAME
+                // def baseJobName = jobName.split('/')[0]
+                def updates = ''
+                println('Collecting change sets...')
+
+                currentBuild.changeSets.each { changeSet ->
+                    changeSet.items.eachWithIndex { item, index ->
+                        def updateMessage = "${index + 1}: ${item.msg}"
+                        updates += updateMessage + '<br>'
+                        println(updateMessage)
+                    }
+                }
+
+                wrap([$class: 'BuildUser']) {
+                    dingtalk(
+                    robot: 'DingTalk-jenkins',
+                    type: 'ACTION_CARD',
+                    title: "[✅成功] ${SERVICE_NAME} 构建成功 (#${env.BUILD_NUMBER})",
+                    text: [
+                        "### 🟢 ${SERVICE_NAME} 构建成功",
+                        "- 分支：**${GIT_BRANCH}**",
+                        "- 镜像版本：**${SERVICE_NAME}:${env.IMAGE_TAG}**",
+                        "- 构建任务：#${env.BUILD_NUMBER}",
+                        "- 持续时间：${currentBuild.durationString}",
+                        "- 执行人：${env.BUILD_USER}",
+                        "- [查看构建详情](${env.BUILD_URL})",
+                        "- 更新内容：<br>${updates ?: '无提交记录'}"
+                    ]
+                )
+                }
+            }
+        }
+
+        failure {
+            script {
+                // def jobName = env.JOB_NAME
+                // def baseJobName = jobName.split('/')[0]
+                def updates = ''
+                println('Collecting change sets...')
+
+                currentBuild.changeSets.each { changeSet ->
+                    changeSet.items.eachWithIndex { item, index ->
+                        def updateMessage = "${index + 1}: ${item.msg}"
+                        updates += updateMessage + '<br>'
+                        println(updateMessage)
+                    }
+                }
+
+                wrap([$class: 'BuildUser']) {
+                    dingtalk(
+                    robot: 'DingTalk-jenkins',
+                    type: 'ACTION_CARD',
+                    title: "[❌失败] ${SERVICE_NAME} 构建失败 (#${env.BUILD_NUMBER})",
+                    text: [
+                        "### 🔴 ${SERVICE_NAME} 构建失败",
+                        "- 分支：**${GIT_BRANCH}**",
+                        "- 构建任务：#${env.BUILD_NUMBER}",
+                        "- 持续时间：${currentBuild.durationString}",
+                        "- 执行人：${env.BUILD_USER}",
+                        "- [查看构建日志](${env.BUILD_URL})",
+                        "- 更新内容：<br>${updates ?: '无提交记录'}"
+                    ]
+                )
+                }
+            }
+        }
+    }
+}
