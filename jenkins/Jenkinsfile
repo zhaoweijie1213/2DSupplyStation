@@ -79,73 +79,73 @@ pipeline {
         }
     }
     post {
-        success {
-            script {
-                // def jobName = env.JOB_NAME
-                // def baseJobName = jobName.split('/')[0]
-                def updates = ''
-                println('Collecting change sets...')
+        // success {
+        //     script {
+        //         // def jobName = env.JOB_NAME
+        //         // def baseJobName = jobName.split('/')[0]
+        //         def updates = ''
+        //         println('Collecting change sets...')
 
-                currentBuild.changeSets.each { changeSet ->
-                    changeSet.items.eachWithIndex { item, index ->
-                        def updateMessage = "${index + 1}: ${item.msg}"
-                        updates += updateMessage + '<br>'
-                        println(updateMessage)
-                    }
-                }
+        //         currentBuild.changeSets.each { changeSet ->
+        //             changeSet.items.eachWithIndex { item, index ->
+        //                 def updateMessage = "${index + 1}: ${item.msg}"
+        //                 updates += updateMessage + '<br>'
+        //                 println(updateMessage)
+        //             }
+        //         }
 
-                wrap([$class: 'BuildUser']) {
-                    dingtalk(
-                    robot: 'DingTalk-jenkins',
-                    type: 'ACTION_CARD',
-                    title: "[✅成功] ${SERVICE_NAME} 构建成功 (#${env.BUILD_NUMBER})",
-                    text: [
-                        "### 🟢 ${SERVICE_NAME} 构建成功",
-                        "- 分支：**${GIT_BRANCH}**",
-                        "- 镜像版本：**${SERVICE_NAME}:${env.IMAGE_TAG}**",
-                        "- 构建任务：#${env.BUILD_NUMBER}",
-                        "- 持续时间：${currentBuild.durationString}",
-                        "- 执行人：${env.BUILD_USER}",
-                        "- [查看构建详情](${env.BUILD_URL})",
-                        "- 更新内容：<br>${updates ?: '无提交记录'}"
-                    ]
-                )
-                }
-            }
-        }
+        //         wrap([$class: 'BuildUser']) {
+        //             dingtalk(
+        //             robot: 'DingTalk-jenkins',
+        //             type: 'ACTION_CARD',
+        //             title: "[✅成功] ${SERVICE_NAME} 构建成功 (#${env.BUILD_NUMBER})",
+        //             text: [
+        //                 "### 🟢 ${SERVICE_NAME} 构建成功",
+        //                 "- 分支：**${GIT_BRANCH}**",
+        //                 "- 镜像版本：**${SERVICE_NAME}:${env.IMAGE_TAG}**",
+        //                 "- 构建任务：#${env.BUILD_NUMBER}",
+        //                 "- 持续时间：${currentBuild.durationString}",
+        //                 "- 执行人：${env.BUILD_USER}",
+        //                 "- [查看构建详情](${env.BUILD_URL})",
+        //                 "- 更新内容：<br>${updates ?: '无提交记录'}"
+        //             ]
+        //         )
+        //         }
+        //     }
+        // }
 
-        failure {
-            script {
-                // def jobName = env.JOB_NAME
-                // def baseJobName = jobName.split('/')[0]
-                def updates = ''
-                println('Collecting change sets...')
+        // failure {
+        //     script {
+        //         // def jobName = env.JOB_NAME
+        //         // def baseJobName = jobName.split('/')[0]
+        //         def updates = ''
+        //         println('Collecting change sets...')
 
-                currentBuild.changeSets.each { changeSet ->
-                    changeSet.items.eachWithIndex { item, index ->
-                        def updateMessage = "${index + 1}: ${item.msg}"
-                        updates += updateMessage + '<br>'
-                        println(updateMessage)
-                    }
-                }
+        //         currentBuild.changeSets.each { changeSet ->
+        //             changeSet.items.eachWithIndex { item, index ->
+        //                 def updateMessage = "${index + 1}: ${item.msg}"
+        //                 updates += updateMessage + '<br>'
+        //                 println(updateMessage)
+        //             }
+        //         }
 
-                wrap([$class: 'BuildUser']) {
-                    dingtalk(
-                    robot: 'DingTalk-jenkins',
-                    type: 'ACTION_CARD',
-                    title: "[❌失败] ${SERVICE_NAME} 构建失败 (#${env.BUILD_NUMBER})",
-                    text: [
-                        "### 🔴 ${SERVICE_NAME} 构建失败",
-                        "- 分支：**${GIT_BRANCH}**",
-                        "- 构建任务：#${env.BUILD_NUMBER}",
-                        "- 持续时间：${currentBuild.durationString}",
-                        "- 执行人：${env.BUILD_USER}",
-                        "- [查看构建日志](${env.BUILD_URL})",
-                        "- 更新内容：<br>${updates ?: '无提交记录'}"
-                    ]
-                )
-                }
-            }
-        }
+        //         wrap([$class: 'BuildUser']) {
+        //             dingtalk(
+        //             robot: 'DingTalk-jenkins',
+        //             type: 'ACTION_CARD',
+        //             title: "[❌失败] ${SERVICE_NAME} 构建失败 (#${env.BUILD_NUMBER})",
+        //             text: [
+        //                 "### 🔴 ${SERVICE_NAME} 构建失败",
+        //                 "- 分支：**${GIT_BRANCH}**",
+        //                 "- 构建任务：#${env.BUILD_NUMBER}",
+        //                 "- 持续时间：${currentBuild.durationString}",
+        //                 "- 执行人：${env.BUILD_USER}",
+        //                 "- [查看构建日志](${env.BUILD_URL})",
+        //                 "- 更新内容：<br>${updates ?: '无提交记录'}"
+        //             ]
+        //         )
+        //         }
+        //     }
+        // }
     }
 }
