@@ -6,7 +6,7 @@ properties([
 pipeline {
     agent any
     environment {
-        SERVICE_NAME = '2D-supply-station' // 定义服务名称变量
+        SERVICE_NAME = 'acg-supply-station' // 定义服务名称变量
         DOCKERFILE_PATH = '2DSupplyStation.Host.Api/Dockerfile'  // ✅ 每个项目可配置
     }
     options {
