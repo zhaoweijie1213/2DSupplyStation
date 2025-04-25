@@ -18,17 +18,17 @@ pipeline {
             name: 'GIT_TAG',
             type: 'PT_TAG',
             defaultValue: 'v1.0.0',
-            branchFilter: 'origin/main',
+            branchFilter: 'origin/master',
             sortMode: 'DESCENDING_SMART',
             tagFilter: 'v[0-9]*.[0-9]*.[0-9]', // ✅ 正式版格式：vX.Y.Z（不含 -dev、-beta 等后缀）
-            description: '选择用于构建的正式发布 Git (main 分支)'
+            description: '选择用于构建的正式发布 Git (master 分支)'
         )
 
         // 非 master 和 develop 分支时使用的集群环境参数
         choice(
             name: 'Cluster',
             choices: ['default', 'staging', 'production'], // 根据你的环境需求添加选项
-            description: '选择部署的集群环境 (除 main 和 develop 分支外使用)'
+            description: '选择部署的集群环境 (除 master 和 develop 分支外使用)'
         )
     }
     stages {
@@ -64,7 +64,7 @@ pipeline {
         }
         stage('开发阶段-部署到内网环境') {
             when {
-                branch 'main'
+                branch 'master'
             }
             steps {
                 script {
