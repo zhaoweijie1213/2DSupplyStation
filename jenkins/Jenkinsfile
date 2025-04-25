@@ -1,7 +1,7 @@
 /* groovylint-disable BlockStartsWithBlankLine, DuplicateMapLiteral, DuplicateNumberLiteral, DuplicateStringLiteral, LineLength, NoDef, VariableTypeRequired */
 /* groovylint-disable-next-line CompileStatic */
 properties([
-    [$class: 'GogsProjectProperty', gogsBranchFilter: 'test', gogsUsePayload: false] //只有test分支启用webhook
+    // [$class: 'GogsProjectProperty', gogsBranchFilter: 'test', gogsUsePayload: false] //只有test分支启用webhook
 ])
 pipeline {
     agent any
