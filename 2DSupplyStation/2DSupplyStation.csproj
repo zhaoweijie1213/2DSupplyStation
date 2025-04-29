@@ -47,8 +47,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\HonkaiStarRail3d\" />
-  </ItemGroup>
-
 </Project>
