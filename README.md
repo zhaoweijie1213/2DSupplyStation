@@ -25,7 +25,7 @@ docker buildx build --load -t acg-supply-station:v1.0.0 .
 运行容器：
 
 ```shell
-cd //home/docker/yml/ACGSupply
+cd /home/docker/yml/ACGSupply
 #运行docker容器
 docker compose down
 docker compose up -d
@@ -33,11 +33,17 @@ docker compose up -d
 
 部署前端：
 
-```
+```shell
 cd /home/docker/nginx
 mkdir -p dist
 unzip dist.zip -d dist
 ```
 
+nginx
 
+```shell
+cd /home/docker/yml/nginx
+docker compose down
+docker compose up -d
+```
 

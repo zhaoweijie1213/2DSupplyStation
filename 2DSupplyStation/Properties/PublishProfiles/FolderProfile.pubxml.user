@@ -2,8 +2,8 @@
 <!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>F:\Git\2DSupplyStation\2DSupplyStation\bin\Release\net8.0\publish\</_PublishTargetUrl>
-    <History>True|2025-04-29T06:11:08.8450598Z||;</History>
+    <_PublishTargetUrl>D:\Git\2DSupplyStation\2DSupplyStation\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2025-05-14T12:52:16.6251829Z||;True|2025-04-29T14:11:08.8450598+08:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

@@ -2,7 +2,7 @@ version: '3.8'
 services:
     app:
         container_name: acg-supply-station
-        image: acg-supply-station:v1.0.0
+        image: acg-supply-station:v1.0.1
         restart: always
         network_mode: host
         # privileged: true # 如果需要访问主机的网络，可以取消注释这一行

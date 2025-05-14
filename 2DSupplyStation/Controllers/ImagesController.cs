@@ -27,16 +27,16 @@ namespace _2DSupplyStation.Controller
         public ApiResult<List<MenuConfig>> Menus(string auth)
         {
             ApiResult<List<MenuConfig>> result = new();
-            bool status = ValidateAuth(auth);
-            if (status)
-            {
-                result= imagesService.Menus();
-            }
-            else
-            {
-                result.SetRsult(ApiResultCode.Fail, null);
-            }
-            return result;
+            //bool status = ValidateAuth(auth);
+            //if (status)
+            //{
+            //    result= imagesService.Menus();
+            //}
+            //else
+            //{
+            //    result.SetRsult(ApiResultCode.Fail, null);
+            //}
+            return imagesService.Menus();
         }
 
         /// <summary>
