@@ -32,4 +32,25 @@ router.isReady().then(() => {
   localStorage.removeItem('vuetify:dynamic-reload')
 })
 
+router.beforeEach((to, from, next) => {
+  const ua = navigator.userAgent.toLowerCase();
+  const isWeChat = ua.includes('micromessenger');
+  const isQQ = ua.includes('qq/') || ua.includes('qqbrowser');
+
+  const isInnerBrowser = isWeChat || isQQ;
+  const requireExternalBrowser = to.meta.requireExternalBrowser;
+
+  if (isInnerBrowser && requireExternalBrowser) {
+    // 避免死循环跳转
+    if (to.name !== 'hint') {
+      next({ name: 'hint' });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+
 export default router
