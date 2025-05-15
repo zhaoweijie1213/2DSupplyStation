@@ -19,7 +19,7 @@ unzip publish.zip -d publish
 
 ```shell
 cd /home/docker/acg-supply-station
-docker buildx build --load -t acg-supply-station:v1.0.0 .
+docker buildx build --load -t acg-supply-station:v1.0.2 .
 ```
 
 运行容器：
