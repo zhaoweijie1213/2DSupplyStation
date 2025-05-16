@@ -8,7 +8,7 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 import { isLoading } from '@/store/loading'
-import { tr } from 'vuetify/locale'
+// import { tr } from 'vuetify/locale'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,7 +51,11 @@ router.beforeEach((to, from, next) => {
 
   // 在内置浏览器中访问，且不是在 /hint 页面，就跳到 /hint
   if (isInnerBrowser && to.path !== '/hint') {
-    return next('/hint')
+        return next({
+      path: '/hint',
+      // 把用户原本要去的完整路径存下来
+      query: { redirect: to.fullPath },
+    })
   }
 
   next()

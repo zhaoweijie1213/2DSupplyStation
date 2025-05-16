@@ -6,25 +6,134 @@
       </v-card-title>
 
       <v-card-text>
-        <div class="text-body-1 mb-6">
-          检测到您正在使用 <strong>微信或 QQ 内置浏览器</strong>，为确保功能正常使用，
-          <br><br>
-          <strong>请复制本站地址</strong>，在手机系统自带浏览器（如 Safari、Chrome）中打开。
-          <br><br>
-          不支持在微信或 QQ 中直接访问。
-        </div>
+        <!-- 原始链接展示区 -->
+        <!-- 改为 readonly textarea，移动端友好选中 -->
+        <v-textarea
+          ref="urlEl"
+          v-model="originalUrl"
+          readonly
+          color="#f5f5f5"
+          variant="outlined"
+          class="url-display mb-4"
+          rows="1"
+          auto-grow
+          @click="selectOriginal"
+        ></v-textarea>
+
+        <!-- 复制按钮 -->
+        <v-btn
+          color="primary"
+          class="mb-4"
+          @click="copyOriginal"
+          rounded
+        >
+          <v-icon left>mdi-content-copy</v-icon>
+          复制原始链接
+        </v-btn>
 
         <v-divider class="my-4"></v-divider>
 
-        <div class="text-subtitle-2" style="color: #666;">
-          操作方式：点击右上角“…” → <strong>选择「在浏览器中打开」</strong><br>
-          或返回你获取链接的地方，<strong>长按复制地址</strong> → 粘贴到浏览器
+        <!-- 说明文案 -->
+        <div class="text-body-1">
+          检测到您正在使用 <strong>{{ source }}</strong> 内置浏览器，功能受限。<br>
+          请点击上方链接或者复制按钮复制链接,
+          然后打开手机系统浏览器(如 Safari、Chrome)<br>
+          在地址栏粘贴并访问该链接。
         </div>
       </v-card-text>
     </v-card>
+
+    <!-- 成功复制提示 -->
+    <v-snackbar
+      v-model="copied"
+      color="success"
+      rounded="lg"
+      timeout="2000"
+      location="bottom"
+      multi-line
+      class="text-center ma-2"
+    >
+      链接已复制到剪贴板
+      <template v-slot:actions>
+        <v-btn variant="text" @click="copied = false">知道了</v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
 <script setup lang="ts">
-// 无需任何逻辑
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+// 拿到原始目标路径
+const redirectPath = (route.query.redirect as string) || '/'
+const originalUrl = ref(window.location.origin + redirectPath)
+
+const copied = ref(false)
+async function copyOriginal() {
+  const text = originalUrl.value
+  // 优先尝试 Clipboard API
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(text)
+      copied.value = true
+      return
+    } catch (e) {
+      // Clipboard API 不可用或失败，继续走后面的 execCommand
+    }
+  }
+  // fallback: execCommand
+  const el = urlEl.value!
+  el.focus()
+  el.select()
+  try {
+    const successful = document.execCommand('copy')
+    if (successful) {
+      copied.value = true
+    } else {
+      throw new Error('execCommand 复制失败')
+    }
+  } catch {
+    alert('复制失败，请手动长按复制上方链接')
+  }
+}
+
+// 选中 textarea 内容
+const urlEl = ref<HTMLTextAreaElement>()
+function selectOriginal() {
+  const el = urlEl.value
+  if (!el) return
+  el.focus()
+  el.select()
+}
+
+// UA 检测
+const ua = navigator.userAgent.toLowerCase()
+const isWeChat = ua.includes('micromessenger')
+const isQQ     = ua.includes(' qq') || ua.includes('qqbrowser')
+const isTaobao = ua.includes('aliapp(tb/') || ua.includes('aliapp(tm/')
+const isTmall  = ua.includes('aliapp(tm/')
+const isAlipay = ua.includes('alipayclient')
+
+const source = computed(() => {
+  if (isWeChat) return '微信'
+  if (isQQ)     return 'QQ'
+  if (isTaobao) return '淘宝'
+  if (isTmall)  return '天猫'
+  if (isAlipay) return '支付宝'
+  return '内置浏览器'
+})
 </script>
+
+<style scoped>
+.url-display {
+  word-break: break-all;
+  font-family: 'Courier New', Courier, monospace;
+  user-select: all;
+  background-color: #f5f5f5;
+  color: black;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+</style>
