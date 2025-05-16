@@ -36,11 +36,12 @@ router.beforeEach((to, from, next) => {
   const ua = navigator.userAgent.toLowerCase();
   const isWeChat = ua.includes('micromessenger');
   const isQQ = ua.includes('qq/') || ua.includes('qqbrowser');
+  const isTaobao = ua.includes('aliapp(tb/') || ua.includes('aliapp(tm/')
+  const isAlipay = ua.includes('alipayclient') // 如需拦截支付宝可加
 
-  const isInnerBrowser = isWeChat || isQQ;
-  const requireExternalBrowser = to.meta.requireExternalBrowser;
+  const isInnerBrowser = isWeChat || isQQ || isTaobao || isAlipay;
 
-  if (isInnerBrowser && requireExternalBrowser) {
+  if (isInnerBrowser) {
     // 避免死循环跳转
     if (to.name !== 'hint') {
       next({ name: 'hint' });
