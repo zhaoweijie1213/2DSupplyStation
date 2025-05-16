@@ -34,12 +34,16 @@
         <v-divider class="my-4"></v-divider>
 
         <!-- 说明文案 -->
-        <div class="text-body-1">
-          检测到您正在使用 <strong>{{ source }}</strong> 内置浏览器，功能受限。<br>
-          请点击上方链接或者复制按钮复制链接,
-          然后打开手机系统浏览器(如 Safari、Chrome)<br>
-          在地址栏粘贴并访问该链接。
-        </div>
+        <!-- 使用 Vuetify 文本排版类 -->
+      <div class="text-center">
+        <p class="text-body-2 mb-2">
+          检测到您正在使用 <strong>{{ source }}</strong> 内置浏览器，功能受限。
+        </p>
+        <p class="text-body-2 mb-2">
+          请点击上方链接或 “复制原始链接” 按钮复制链接，<br>
+          然后打开手机系统浏览器(如 Safari、Chrome),在地址栏粘贴并访问该链接。
+        </p>
+      </div>
       </v-card-text>
     </v-card>
 
