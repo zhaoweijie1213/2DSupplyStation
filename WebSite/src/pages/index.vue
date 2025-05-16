@@ -1,74 +1,43 @@
 <template>
-  <AppHead />
-  <v-navigation-drawer v-model="drawer">
-    <v-list>
-      <v-list-item
-        v-for="(menu, index) in menus"
-        :key="index"
-        :title="menu.name"
-        :active="menu.path == activeTab"
-        @click="clickItem(menu.path)"
-      ></v-list-item>
-    </v-list>
-  </v-navigation-drawer>
-  <v-bottom-navigation v-model="activeTab" v-if="mobile" grow>
-    <v-btn
-      v-for="(menu, index) in menus"
-      :key="index"
-      :value="menu.path"
-      @click="clickItem(menu.path)"
+  <v-container fluid class="pa-0">
+    <v-img
+      :src="bgImage"
+      cover
+      height="100vh"
+      width="100%"
+      class="d-flex align-center justify-center"
     >
-      <v-icon>mdi-heart</v-icon>
-      <span>{{ menu.name }}</span>
-    </v-btn>
-  </v-bottom-navigation>
-
-  <ImagesContainer :product="activeTab" :hidden="false" />
+      <div class="overlay d-flex justify-center align-center">
+        <v-btn
+          color="primary"
+          class="elevation-12"
+          @click="goToGallery"
+          style="width: 90vw; max-width: 500px; height: 80px; font-size: 24px; border-radius: 12px;"
+        >
+          进入图库
+        </v-btn>
+      </div>
+    </v-img>
+  </v-container>
 </template>
 
-<script lang="ts" setup>
-import { onMounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { ImagesServiceProxy, MenuConfig } from "@/api/api";
-import { useDisplay } from "vuetify";
-import AppHead from "@/components/AppHead.vue";
-import ImagesContainer from "@/components/ImagesContainer.vue";
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import bgImage from '@/assets/bg.png' // 替换成你自己的背景图路径
 
-const { mobile } = useDisplay();
-const route = useRoute();
-const menus = ref<MenuConfig[]>([]);
-const activeTab = ref("");
-const drawer = ref(!mobile.value);
-const auth: string = route.query.auth as string;
-onMounted(async () => {
-  console.log(mobile.value); // false
-  await getMenus();
-  clickItem(menus.value[0].path);
-});
-
-watch(
-  () => mobile,
-  (newValue) => {
-    drawer.value = !newValue.value;
-  }
-);
-
-const clickItem = async (name: string) => {
-  activeTab.value = name;
-};
-
-async function getMenus() {
-  var client = new ImagesServiceProxy();
-  var res = await client.menus(auth);
-  if (res.code == 0 && res.data) {
-    menus.value = res.data;
-  }
+const router = useRouter()
+const goToGallery = () => {
+  router.push('/gallery')
 }
 </script>
-<style lang="css" scoped>
-@media (min-width: 768px) {
-  .img_container {
-    width: 80% !important;
-  }
+
+<style scoped>
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));
 }
 </style>

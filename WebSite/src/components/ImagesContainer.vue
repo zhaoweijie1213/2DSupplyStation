@@ -40,6 +40,7 @@
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { ImageInfo, ImagesServiceProxy } from "@/api/api";
+import { isLoading } from '@/store/loading' // 引入全局 loading 状态
 
 const props = defineProps<{
   product: string;
@@ -63,6 +64,7 @@ watch(
       if (res?.code == 0 && res.data) {
         images.value.push(...res.data);
       }
+      isLoading.value = false; // 关闭全局 loading
     }
   },
   { immediate: true } // 组件加载时立即执行一次
