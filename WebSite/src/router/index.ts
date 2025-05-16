@@ -42,16 +42,12 @@ router.beforeEach((to, from, next) => {
 
   const isWeChat = ua.includes('micromessenger');
   const isQQ = ua.includes('qq/') || ua.includes('qqbrowser');
-  const isInnerBrowser = isWeChat || isQQ;
+  const isTaobao = ua.includes('aliapp(tb/') || ua.includes('aliapp(tm/')
+  const isAlipay = ua.includes('alipayclient') // 如需拦截支付宝可加
 
-  const isTencentBot = ua.includes('tencent') || ua.includes('qcloud') || ua.includes('qqbrowser') || ua.includes('tencenttraveler') || ua.includes('security-crawler');
-  const isSearchEngineBot = ua.includes('spider') || ua.includes('googlebot') || ua.includes('baiduspider') || ua.includes('bingbot') || ua.includes('sogou') || ua.includes('360spider');
+  const isInnerBrowser = isWeChat || isQQ || isTaobao || isAlipay;
 
-  const isBotVisitor = isTencentBot || isSearchEngineBot;
-
-  const requireExternalBrowser = to.meta.requireExternalBrowser;
-
-  if ((isInnerBrowser || isBotVisitor) && requireExternalBrowser) {
+  if (isInnerBrowser) {
     // 避免死循环跳转
     if (to.name !== 'hint') {
       next({ name: 'hint' });
