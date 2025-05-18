@@ -8,6 +8,7 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 import { isLoading } from '@/store/loading'
+// import { tr } from 'vuetify/locale'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,7 +37,7 @@ router.isReady().then(() => {
 router.beforeEach((to, from, next) => {
 
 
- isLoading.value = true
+  isLoading.value = true
 
   const ua = navigator.userAgent.toLowerCase();
 
@@ -47,16 +48,17 @@ router.beforeEach((to, from, next) => {
 
   const isInnerBrowser = isWeChat || isQQ || isTaobao || isAlipay;
 
-  if (isInnerBrowser) {
-    // 避免死循环跳转
-    if (to.name !== 'hint') {
-      next({ name: 'hint' });
-    } else {
-      next();
-    }
-  } else {
-    next();
+
+  // 在内置浏览器中访问，且不是在 /hint 页面，就跳到 /hint
+  if (isInnerBrowser && to.path !== '/hint') {
+        return next({
+      path: '/hint',
+      // 把用户原本要去的完整路径存下来
+      query: { redirect: to.fullPath },
+    })
   }
+
+  next()
 });
 
 // 加载完成
