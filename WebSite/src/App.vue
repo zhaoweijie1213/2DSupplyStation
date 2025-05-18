@@ -11,11 +11,7 @@
         />
       </div>
     </v-overlay>
-
-
-    <v-main>
       <router-view />
-    </v-main>
   </v-app>
 </template>
 

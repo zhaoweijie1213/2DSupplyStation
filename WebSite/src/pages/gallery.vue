@@ -3,8 +3,8 @@
     <template v-slot:prepend>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
     </template>
-    <v-app-bar-title>图库</v-app-bar-title>
-      <v-spacer></v-spacer>
+    <v-app-bar-title></v-app-bar-title>
+    <v-spacer></v-spacer>
     <!-- 桌面端菜单按钮 -->
     <template v-if="!mobile">
       <v-btn
@@ -39,7 +39,7 @@ import { ImagesServiceProxy, MenuConfig } from "@/api/api";
 import { useDisplay } from "vuetify";
 // import AppHead from "@/components/AppHead.vue";
 import ImagesContainer from "@/components/ImagesContainer.vue";
-import { isLoading } from '@/store/loading' // 引入全局 loading 状态
+import { isLoading } from "@/store/loading"; // 引入全局 loading 状态
 
 const { mobile } = useDisplay();
 const route = useRoute();
@@ -50,7 +50,7 @@ const auth: string = route.query.auth as string;
 onMounted(async () => {
   console.log(mobile.value); // false
   await getMenus();
-  if(menus.value.length>0){
+  if (menus.value.length > 0) {
     clickItem(menus.value[0].path);
   }
 });
@@ -63,9 +63,9 @@ watch(
 );
 
 const clickItem = async (name: string) => {
-  if (activeTab.value === name) return
-  isLoading.value = true
-  activeTab.value = name
+  if (activeTab.value === name) return;
+  isLoading.value = true;
+  activeTab.value = name;
 };
 
 async function getMenus() {
