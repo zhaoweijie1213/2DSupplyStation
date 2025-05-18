@@ -1,32 +1,30 @@
 <template>
-  <v-main>
-    <v-container fluid class="pa-0">
-      <v-img
-        :src="bgImage"
-        cover
-        height="100vh"
-        width="100%"
-        class="d-flex align-center justify-center"
-      >
-        <div class="overlay d-flex justify-center align-center">
-          <v-btn
-            color="primary"
-            class="elevation-12"
-            @click="goToGallery"
-            style="
-              width: 90vw;
-              max-width: 500px;
-              height: 80px;
-              font-size: 24px;
-              border-radius: 12px;
-            "
-          >
-            Go to Home
-          </v-btn>
-        </div>
-      </v-img>
-    </v-container>
-  </v-main>
+  <v-container fluid class="pa-0">
+    <v-img
+      :src="bgImage"
+      cover
+      height="100vh"
+      width="100%"
+      class="d-flex align-center justify-center"
+    >
+      <div class="overlay d-flex justify-center align-center">
+        <v-btn
+          color="primary"
+          class="elevation-12"
+          @click="goToGallery"
+          style="
+            width: 90vw;
+            max-width: 500px;
+            height: 80px;
+            font-size: 24px;
+            border-radius: 12px;
+          "
+        >
+          Go to Home
+        </v-btn>
+      </div>
+    </v-img>
+  </v-container>
 </template>
 
 <script setup lang="ts">
